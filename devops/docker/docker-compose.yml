@@ -1,0 +1,57 @@
+nginx:
+  build: nginx
+  ports:
+    - "80:80"
+  volumes:
+    - "./nginx/conf.d/nginx.conf/:/etc/nginx/nginx.conf"
+    - "./nginx/conf.d/seekverify.conf:/etc/nginx/conf.d/seekverify.conf"
+  volumes_from:
+    - phpfpm
+  links:
+    - phpfpm
+
+phpfpm:
+  build: phpfpm
+  entrypoint: /run.sh
+  volumes:
+    - ../../:/app/seekverify
+    - "./phpfpm/run.sh:/run.sh"
+  links:
+    - mysql
+    - dd_agent
+    - redis
+  environment:
+    AWS_ACCESS_KEY_ID:
+    AWS_SECRET_ACCESS_KEY:
+    AWS_DEFAULT_REGION:
+    APP_ENV: dev
+
+nodejs:
+    image: node:4.3.1
+
+mysql:
+  image: mysql:5.6.27
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: test
+    MYSQL_DATABASE: seekverify
+
+dd_agent:
+  image: datadog/docker-dd-agent
+  command: /opt/datadog-agent/embedded/bin/python /opt/datadog-agent/agent/dogstatsd.py
+  privileged: true
+  volumes:
+    - "/proc/:/host/proc/:ro"
+    - "/sys/fs/cgroup/:/host/sys/fs/cgroup:ro"
+  environment:
+    - API_KEY=12344
+    - TAGS=dev_$USER
+  hostname: "dev.$USER"
+  extra_hosts:
+    - "localhost:dev.$USER"
+redis:
+  image: redis
+  ports:
+    - "6379:6379"
+
