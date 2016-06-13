@@ -24,3 +24,19 @@ Name                  Address      Port  Status  Leader  Protocol  Build  Datace
 jesus-nomad-01.jesus  10.132.0.14  4648  alive   false   2         0.3.2  europe-west1-b  jesus
 jesus-nomad-02.jesus  10.132.0.25  4648  alive   true    2         0.3.2  europe-west1-c  jesus
 jesus-nomad-03.jesus  10.132.0.52  4648  alive   false   2         0.3.2  europe-west1-d  jesus
+
+
+root@jesus-nomad-03:/etc/nomad.d# nomad node-status
+ID        DC              Name            Class   Drain  Status
+d1bd83aa  europe-west1-b  jesus-farm-01   <none>  false  ready
+05371fd0  europe-west1-d  jesus-farm-02   <none>  false  ready
+
+
+SCHEDULING
+
+
+
+JOBS
+
+Jobs written in JSON are sent with POST to HTTP endpoint
+HCL jobs are submitted using the Nomad CLI
