@@ -1,0 +1,26 @@
+https://www.nomadproject.io/downloads.html
+
+Nomad comes as a single go binary,for both agent and server
+
+./nomad agent -dev
+
+nomad server configuration
+
+server {
+  enabled = true
+  bootstrap_expect = 3
+}
+
+bind_addr = "10.132.0.25"
+data_dir = "/var/lib/nomad"
+
+#name = "jesus.heredia"
+region = "jesus"
+datacenter = "europe-west1-c"
+
+
+root@jesus-nomad-01:~# nomad server-members
+Name                  Address      Port  Status  Leader  Protocol  Build  Datacenter      Region
+jesus-nomad-01.jesus  10.132.0.14  4648  alive   false   2         0.3.2  europe-west1-b  jesus
+jesus-nomad-02.jesus  10.132.0.25  4648  alive   true    2         0.3.2  europe-west1-c  jesus
+jesus-nomad-03.jesus  10.132.0.52  4648  alive   false   2         0.3.2  europe-west1-d  jesus
